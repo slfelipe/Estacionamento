@@ -16,9 +16,9 @@ public class Estacionamento {
 
 	static JFrame telaPrincipal = new JFrame("Estacionamento");
 	static JFrame telaEntrada = new JFrame("Tipo de Vaga");
-	// static JFrame telaSaida = new JFrame("Saída de Veiculo");
+	//static JFrame telaSaida = new JFrame("Saída de Veiculo");
 
-	// static JButton tabelaVagas=new JButton("Planta de Vagas");
+	//static JButton tabelaVagas=new JButton("Planta de Vagas");
 	static JButton btEntrada = new JButton("Entrada");
 	static JButton btSaida = new JButton("Saída");
 	static JButton btDeficiente = new JButton("Deficiente");
@@ -59,7 +59,22 @@ public class Estacionamento {
 		// telaPrincipal.add(tabelaVagas);
 		// tabelaVagas.setVisible(true);
 		// tabelaVagas.setBounds(650, 150, 130, 30);
-
+		
+		telaPrincipal.add(panelPiso1);
+		telaPrincipal.add(scrollPiso1);
+		telaPrincipal.add(tablePiso1);
+		tabelaPiso1();
+		
+		telaPrincipal.add(panelPiso2);
+		telaPrincipal.add(scrollPiso2);
+		telaPrincipal.add(tablePiso2);
+		tabelaPiso2();
+		
+		telaPrincipal.add(panelPiso3);
+		telaPrincipal.add(scrollPiso3);
+		telaPrincipal.add(tablePiso3);
+		tabelaPiso3();
+		
 		janelaEntrada();
 		telaPrincipal.add(btEntrada);
 		btEntrada.setVisible(true);
@@ -68,6 +83,8 @@ public class Estacionamento {
 		telaPrincipal.add(btSaida);
 		btSaida.setVisible(true);
 		btSaida.setBounds(650, 250, 130, 30);
+		
+		
 
 	}
 
