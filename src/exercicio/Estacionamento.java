@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,9 +39,14 @@ public class Estacionamento {
 	static JScrollPane scrollPiso3 = new JScrollPane();
 	static JPanel panelPiso3 = new JPanel();
 
-	static String[][] piso1 = new String[21][3];
-	static String[][] piso2 = new String[21][3];
-	static String[][] piso3 = new String[21][3];
+	static int[][][] matrizVagas = new int[3][21][3];
+	static int numVagas = 21;
+
+	static int contador = 63;
+
+	final static int DEFICIENTE = 1;
+	final static int MOTO = 2;
+	final static int COMUM = 3;
 
 	public static void main(String[] args) {
 		resetarVagas();
@@ -88,40 +94,50 @@ public class Estacionamento {
 	}
 
 	static void resetarVagas() {
-		for (int i = 0; i < piso1.length; i++) {
-			piso1[i][2] = "Disponível";
+
+		// [2] 0 = Disponível
+		// [1] 1 = Deficiente
+		// [1] 2 = Moto
+		// [1] 3 = Comum
+
+		for (int i = 0; i < numVagas; i++) {
+			matrizVagas[0][i][2] = 0;
+
 			if (i < 3) {
-				piso1[i][1] = "Deficiente";
+				matrizVagas[0][i][1] = DEFICIENTE;
 			}
 			if (i >= 3 && i <= 10) {
-				piso1[i][1] = "Moto";
+				matrizVagas[0][i][1] = MOTO;
 			}
 			if (i > 10) {
-				piso1[i][1] = "Comum";
+				matrizVagas[0][i][1] = COMUM;
 			}
 		}
-		for (int i = 0; i < piso2.length; i++) {
-			piso2[i][2] = "Disponível";
+		for (int i = 0; i < numVagas; i++) {
+			matrizVagas[0][i][2] = 0;
+
 			if (i < 3) {
-				piso2[i][1] = "Deficiente";
+				matrizVagas[1][i][1] = DEFICIENTE;
 			}
 			if (i >= 3 && i <= 10) {
-				piso2[i][1] = "Moto";
+				matrizVagas[1][i][1] = MOTO;
 			}
 			if (i > 10) {
-				piso2[i][1] = "Comum";
+				matrizVagas[1][i][1] = COMUM;
 			}
 		}
-		for (int i = 0; i < piso3.length; i++) {
-			piso3[i][2] = "Disponível";
+		for (int i = 0; i < numVagas; i++) {
+
+			matrizVagas[2][i][2] = 0;
+
 			if (i < 3) {
-				piso3[i][1] = "Deficiente";
+				matrizVagas[2][i][1] = DEFICIENTE;
 			}
 			if (i >= 3 && i <= 10) {
-				piso3[i][1] = "Moto";
+				matrizVagas[2][i][1] = MOTO;
 			}
 			if (i > 10) {
-				piso3[i][1] = "Comum";
+				matrizVagas[2][i][1] = COMUM;
 			}
 		}
 
@@ -146,9 +162,9 @@ public class Estacionamento {
 		tablePiso1.setBounds(0, 0, 195, 358);
 		tablePiso1.setModel(new DefaultTableModel(new Object[] { "Vaga", "Tipo", "Status" }, 0));
 
-		for (int i = 0; i < piso1.length; i++) {
+		for (int i = 0; i < numVagas; i++) {
 			DefaultTableModel valores = (DefaultTableModel) tablePiso1.getModel();
-			valores.addRow(new Object[] { i + 1, piso1[i][1], piso1[i][2] });
+			valores.addRow(new Object[] { i + 1, matrizVagas[0][i][1], matrizVagas[0][i][2] });
 		}
 		tablePiso1.getColumnModel().getColumn(0).setPreferredWidth(35);
 	}
@@ -172,9 +188,9 @@ public class Estacionamento {
 		tablePiso2.setBounds(0, 0, 195, 358);
 		tablePiso2.setModel(new DefaultTableModel(new Object[] { "Vaga", "Tipo", "Status" }, 0));
 
-		for (int i = 0; i < piso2.length; i++) {
-			DefaultTableModel valores2 = (DefaultTableModel) tablePiso2.getModel();
-			valores2.addRow(new Object[] { i + 1, piso2[i][1], piso2[i][2] });
+		for (int i = 0; i < numVagas; i++) {
+			DefaultTableModel valores = (DefaultTableModel) tablePiso2.getModel();
+			valores.addRow(new Object[] { i + 1, matrizVagas[1][i][1], matrizVagas[1][i][2] });
 		}
 		tablePiso2.getColumnModel().getColumn(0).setPreferredWidth(35);
 	}
@@ -198,9 +214,9 @@ public class Estacionamento {
 		tablePiso3.setBounds(0, 0, 195, 358);
 		tablePiso3.setModel(new DefaultTableModel(new Object[] { "Vaga", "Tipo", "Status" }, 0));
 
-		for (int i = 0; i < piso3.length; i++) {
-			DefaultTableModel valores2 = (DefaultTableModel) tablePiso3.getModel();
-			valores2.addRow(new Object[] { i + 1, piso3[i][1], piso3[i][2] });
+		for (int i = 0; i < numVagas; i++) {
+			DefaultTableModel valores = (DefaultTableModel) tablePiso3.getModel();
+			valores.addRow(new Object[] { i + 1, matrizVagas[2][i][1], matrizVagas[2][i][2] });
 		}
 		tablePiso3.getColumnModel().getColumn(0).setPreferredWidth(35);
 	}
@@ -228,8 +244,61 @@ public class Estacionamento {
 				telaEntrada.add(btDeficiente);
 				btDeficiente.setVisible(true);
 				btDeficiente.setBounds(75, 190, 150, 50);
+
+				acoesEntrada();
 			}
 		});
 
 	}
+
+	static void acoesEntrada() {
+		
+		btComum.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				botaoComum();
+			}
+		});
+		
+	}
+	static void botaoComum(){
+		int vaga = (int) (Math.random() * 21);
+
+		int piso = (int) (Math.random() * 3);
+
+		if (contador > 0) {
+			if(matrizVagas[piso][vaga][2] == 1){
+				botaoComum();
+			}else if (matrizVagas[piso][vaga][2] == 0 && matrizVagas[piso][vaga][1] == COMUM) {
+				
+				matrizVagas[piso][vaga][2] = 1;
+				contador--;
+				
+				if (piso == 0) {
+
+					tablePiso1.getModel().setValueAt("OCUPADO", vaga, 2);
+
+				} else if (piso == 1) {
+
+					tablePiso2.getModel().setValueAt("OCUPADO", vaga, 2);
+
+				} else {
+
+					tablePiso3.getModel().setValueAt("OCUPADO", vaga, 2);
+
+				}
+
+			}else{
+				botaoComum();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Não há vagas");
+
+		}
+
+	}
+
 }
